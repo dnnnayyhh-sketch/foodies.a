@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>مطعم foodies.a | القائمة الرقمية الفاخرة</title>
+  
+  <meta name="theme-color" content="#0a0c10">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0a0d14;
+      --bg-card: #121722;
+      --bg-card-hover: #182030;
+      --gold-primary: #d4af37;
+      --gold-glow: rgba(212, 175, 55, 0.25);
+      --gold-gradient: linear-gradient(135deg, #f5d061 0%, #d4af37 50%, #aa820a 100%);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-subtle: rgba(212, 175, 55, 0.18);
+      --radius-lg: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding-bottom: 90px;
+      overflow-x: hidden;
+    }
+
+    /* شريط الرأس */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 13, 20, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 14px var(--gold-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+
+    .brand-text span {
+      font-size: 0.72rem;
+      color: var(--gold-primary);
+      font-weight: 700;
+      display: block;
+    }
+
+    .btn-call-head {
+      border: 1px solid var(--gold-primary);
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold-primary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* البانر الترحيبي الفاخر */
+    .hero-banner {
+      margin: 14px 16px;
+      background: linear-gradient(145deg, #162032 0%, #0d121c 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .hero-banner::after {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 140px;
+      height: 140px;
+      background: var(--gold-primary);
+      filter: blur(75px);
+      opacity: 0.2;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold-gradient);
+      color: #000;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .hero-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* حقل البحث */
+    .search-box {
+      margin: 0 16px 14px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px 12px 38px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    .search-box span {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.95rem;
+      opacity: 0.5;
+    }
+
+    /* تبويبات التصنيفات الأفقية */
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 16px 12px;
+      scrollbar-width: none;
+    }
+    .categories-bar::-webkit-scrollbar { display: none; }
+
+    .cat-btn {
+      flex: 0 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--gold-gradient);
+      color: #05070a;
+      border-color: var(--gold-primary);
+      box-shadow: 0 4px 14px var(--gold-glow);
+    }
+
+    /* قائمة الأطباق */
+    .menu-grid {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .food-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .food-card:active {
+      transform: scale(0.985);
+    }
+
+    .food-thumb {
+      width: 82px;
+      height: 82px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .food-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .food-cat-badge {
+      font-size: 0.68rem;
+      color: var(--gold-primary);
+      font-weight: 700;
+    }
+
+    .food-name {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 2px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .food-desc {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .btn-add {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-primary);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add:active {
+      background: var(--gold-primary);
+      color: #000;
+    }
+
+    /* التبويبات الأخرى (السلة، معلوماتنا) */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* تفاصيل صفحة السلة */
+    .cart-wrapper {
+      padding: 16px;
+    }
+
+    .cart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 18px 14px;
+      margin-bottom: 14px;
+    }
+
+    .type-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .type-opt {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.25);
+      color: var(--text-muted);
+      padding: 12px 6px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .type-opt.active {
+      border-color: var(--gold-primary);
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-primary);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .cart-item-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cart-ctrls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-qty {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--bg-card-hover);
+      border: 1px solid var(--border-subtle);
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.05rem;
+    }
+
+    .input-field {
+      width: 100%;
+      background: #0a0d14;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 12px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .input-field:focus { border-color: var(--gold-primary); }
+
+    .btn-whatsapp-order {
+      width: 100%;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+    }
+
+    /* صفحة معلومات المطعم */
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.88rem;
+    }
+
+    .info-label { color: var(--text-muted); }
+    .info-val { color: #fff; font-weight: 700; direction: ltr; }
+
+    /* الشريط السفلي المتنقل */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(12, 16, 25, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 8px 0;
+      z-index: 99;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-btn.active {
+      color: var(--gold-primary);
+    }
+
+    .nav-icon {
+      font-size: 1.25rem;
+    }
+
+    .nav-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -2px;
+      left: calc(50% + 4px);
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- رأس الصفحة العلوي -->
+  <header>
+    <div class="brand-wrap">
+      <div class="brand-logo">🍔</div>
+      <div class="brand-text">
+        <h1>foodies.a</h1>
+        <span>مطعم & وجبات سريعة</span>
+      </div>
+    </div>
+    <a href="tel:+963998187778" class="btn-call-head">
+      <span>📞</span> اتصل بنا
+    </a>
+  </header>
+
+  <!-- تبويب 1: المنيو الرئيسي -->
+  <main id="tab-menu" class="tab-content active">
+    
+    <div class="hero-banner">
+      <div class="hero-tag">✨ مذاق لا يُنسى</div>
+      <div class="hero-title">قائمة مأكولات ووجبات فاخرة</div>
+      <div class="hero-sub">اختر أطباقك المفضلة لتصلك ساخنة وطازجة لأينما تكون</div>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="ابحث عن وجبة، برغر، ساندويش..." onkeyup="filterMenu()">
+      <span>🔍</span>
+    </div>
+
+    <div class="categories-bar">
+      <button class="cat-btn active" onclick="selectCat('all', this)">الكل</button>
+      <button class="cat-btn" onclick="selectCat('برغر', this)">البرغر</button>
+      <button class="cat-btn" onclick="selectCat('ساندويش غربي', this)">ساندويش & غربي</button>
+      <button class="cat-btn" onclick="selectCat('وجبات وستيك', this)">ستيك & وجبات</button>
+      <button class="cat-btn" onclick="selectCat('مشاوي ومناسف', this)">مشاوي ومناسف</button>
+      <button class="cat-btn" onclick="selectCat('أطباق صحية ومقبلات', this)">صحي & مقبلات</button>
+      <button class="cat-btn" onclick="selectCat('فطائر وصاج', this)">فطائر وصاج</button>
+    </div>
+
+    <div class="menu-grid" id="menuContainer">
+      <!-- الوجبات تُعرض ديناميكياً من الجافاسكريبت -->
+    </div>
+  </main>
+
+  <!-- تبويب 2: السلة وإتمام الطلب -->
+  <section id="tab-cart" class="tab-content">
+    <div class="cart-wrapper">
+      <div class="cart-card">
+        <h2 style="font-size:1.1rem; color:var(--gold-primary); margin-bottom:12px; font-weight:800;">خيارات استلام الطلب</h2>
+        <div class="type-switch">
+          <div class="type-opt active" id="optDelivery" onclick="setOrderType('توصيل طلب')">🛵 توصيل طلب<br><small style="font-size:0.7rem; font-weight:400;">لباب منزلك أو مكتبك</small></div>
+          <div class="type-opt" id="optTakeaway" onclick="setOrderType('استلام من الفرع')">🏪 استلام من الفرع<br><small style="font-size:0.7rem; font-weight:400;">جاهز فور وصولك</small></div>
+        </div>
+
+        <h3 style="font-size:0.95rem; margin-bottom:10px;">الأصناف المختارة:</h3>
+        <div id="cartItemsList">
+          <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:16px;">السلة فارغة حالياً.. تصفح المنيو وأضف وجباتك المفضلة!</p>
+        </div>
+      </div>
+
+      <div class="cart-card">
+        <input type="text" id="custName" class="input-field" placeholder="اسمك الكريم ورقم الطاولة أو العنوان بالتفصيل">
+        <textarea id="custNotes" class="input-field" rows="2" placeholder="ملاحظات إضافية (بدون مايونيز، حار إكسترا، صوص جانبي...)"></textarea>
+
+        <button class="btn-whatsapp-order" onclick="sendWhatsAppOrder()">
+          <span>💬</span> تأكيد وإرسال الطلب عبر واتساب
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- تبويب 3: معلومات المطعم -->
+  <section id="tab-info" class="tab-content">
+    <div class="cart-wrapper">
+      <div class="cart-card">
+        <div style="text-align:center; margin-bottom:16px;">
+          <div style="font-size:2.8rem; margin-bottom:4px;">🍔</div>
+          <h2 style="color:var(--gold-primary); font-size:1.25rem;">مطعم foodies.a</h2>
+          <p style="font-size:0.8rem; color:var(--text-muted);">أشهى أصناف البرغر والوجبات الغربية والمأكولات الطازجة</p>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">رقم الهاتف والواتساب:</span>
+          <span class="info-val">+963 998 187 778</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">أقسام المطعم:</span>
+          <span class="info-val" style="direction:rtl;">صالة عائلات، تيك أواي، توصيل منزلي</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">سرعة التجهيز:</span>
+          <span class="info-val" style="direction:rtl;">15 - 25 دقيقة</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">حالة الطلبات:</span>
+          <span class="info-val" style="direction:rtl; color:#10b981;">جاهزون لاستقبال طلباتكم الآن</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- شريط الملاحة السفلي -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('menu', this)">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">المنيو</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('cart', this)">
+      <span class="nav-icon">🛍️</span>
+      <span class="nav-label">الطلب والسلة</span>
+      <span class="cart-badge" id="cartCountBadge" style="display:none;">0</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('info', this)">
+      <span class="nav-icon">ℹ️</span>
+      <span class="nav-label">معلوماتنا</span>
+    </button>
+  </nav>
+
+  <script>
+    // قائمة الأصناف الكاملة المأخوذة من المحادثة مع صور Unsplash CDN مباشرة
+    const menuData = [
+      // تصنيف: البرغر
+      { name: "همبرغر", cat: "برغر", desc: "لحم بقري بلدي طازج مشوي مع الخس والطماطم والمخلل والصوص الخاص", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" },
+      { name: "سماش برغر", cat: "برغر", desc: "لحم مسحوق مقرمش الأطراف مع طبقات جبنة التشيدر السائلة والخبز المحمص", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80" },
+      { name: "برغر جوسي", cat: "برغر", desc: "لحم غني بالعصارة ومحشو بخليط أجبان مميزة تذوب مع القرمشة الأولى", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80" },
+      { name: "برغر بريسكت", cat: "برغر", desc: "شرائح لحم البريسكت المدخن ببطء مع صوص الباربكيو الفاخر", img: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80" },
+      { name: "تشيكن برغر", cat: "برغر", desc: "صدر دجاج مقرمش ذهبي مع صوص الكولسلو والمايونيز الكريمي", img: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80" },
+      { name: "برغر آنجوس", cat: "برغر", desc: "شريحة لحم بلاك آنجوس معتق وفاخر لأصحاب الذوق الرفيع", img: "https://images.unsplash.com/photo-1583032015879-c5c24e037f40?auto=format&fit=crop&w=400&q=80" },
+      { name: "ستك برغر", cat: "برغر", desc: "قطع ستيك لحم متبل بخلطة خاصة مع الفطر والبصل المكرمل", img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=400&q=80" },
+
+      // تصنيف: ساندويش وغربي
+      { name: "وجبة كنتاكي دبابيس", cat: "ساندويش غربي", desc: "دبابيس دجاج بخلطة كرسبي مقرمشة تقدم مع البطاطا والثومية", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80" },
+      { name: "كريسبي", cat: "ساندويش غربي", desc: "أصابع فيليه دجاج مقرمشة مع صوص الخردل بالعسل والمخلل", img: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=400&q=80" },
+      { name: "ناجتس", cat: "ساندويش غربي", desc: "قطع دجاج ذهبية مقرمشة وخفيفة، محببة للصغار والكبار", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=400&q=80" },
+      { name: "أسكالوب", cat: "ساندويش غربي", desc: "شرائح لحم أو دجاج بانيه مقلي بتتبيلة بهارات أوروبية ناعمة", img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=400&q=80" },
+      { name: "زنجر", cat: "ساندويش غربي", desc: "صدر دجاج حار ومقرمش مع خس طازج ومايونيز مدخن", img: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=400&q=80" },
+      { name: "بانيني إيطالي", cat: "ساندويش غربي", desc: "ساندويش بالخبز الإيطالي المحمص على الجريل مع الجبن الذائب والأعشاب", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" },
+      { name: "فرانسيسكو", cat: "ساندويش غربي", desc: "دجاج متبل مع جبنة الموزاريلا والذرة وصوص الصويا بالمايونيز", img: "https://images.unsplash.com/photo-1619860860774-1e2e17343432?auto=format&fit=crop&w=400&q=80" },
+      { name: "فاهيتا", cat: "ساندويش غربي", desc: "شرائح دجاج مع الفلفل الملون والبصل وتتبيلة الفاهيتا المكسيكية", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=400&q=80" },
+      { name: "مكسيكي", cat: "ساندويش غربي", desc: "خلطة لحم أو دجاج حار ببهارات مكسيكية وصوص حار لا يقاوم", img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80" },
+      { name: "شيش طاووق", cat: "ساندويش غربي", desc: "مكعبات دجاج متبلة بالليمون واللبن والثوم مشوية بعناية", img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80" },
+      { name: "شقف", cat: "ساندويش غربي", desc: "قطع لحم غنم طري مشوي على الفحم مع البقدونس والبصل", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" },
+            { name: "شاورما", cat: "ساندويش غربي", desc: "شاورما دجاج بتتبيلة أصيلة مع الثومية ومخلل الخيار المقرمش", img: "https://images.unsplash.com/photo-1633337474565-12c5b3644265?auto=format&fit=crop&w=400&q=80" },
+
+      // تصنيف: ستيك ووجبات
+      { name: "ستك دجاج", cat: "وجبات وستيك", desc: "صدر دجاج مشوي متكامل يقدم مع صوص المشروم الكريمي أو الخردل", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=400&q=80" },
+      { name: "ستك لحم", cat: "وجبات وستيك", desc: "قطعة لحم تندرلوين طرية مشوية حسب الطلب مع خضار سوتيه", img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80" },
+      { name: "سودة (كبدة)", cat: "وجبات وستيك", desc: "سودة دجاج أو غنم طازجة مطهوة بدبس الرمان والبهارات", img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=400&q=80" },
+      { name: "بطاطا وكاسة بطاطا", cat: "وجبات وستيك", desc: "أصابع بطاطا ذهبية ساخنة ومملحة ببهارات فووديز الخاصة", img: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" },
+
+      // تصنيف: مشاوي ومناسف
+      { name: "مناسف لحم أو دجاج (توصية قبل بساعة)", cat: "مشاوي ومناسف", desc: "منسف عربي ملكي بالأرز الفاخر والمكسرات المحمصة مع اللبن", img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=400&q=80" },
+      { name: "سمك مشط", cat: "مشاوي ومناسف", desc: "سمك مشط طازج متبل بالثوم والليمون ومشوي حتى النضج المثالي", img: "https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=400&q=80" },
+      { name: "سمك أجاج", cat: "مشاوي ومناسف", desc: "سمك أجاج بحري فاخر مشوي على الفحم أو بالفرن مع الطحينة", img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=400&q=80" },
+      { name: "قريدس (جمبري)", cat: "مشاوي ومناسف", desc: "حبات جمبري مشوية مع الزبدة والثوم والأعشاب العطرية", img: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=400&q=80" },
+      { name: "جوانح مشوية", cat: "مشاوي ومناسف", desc: "أجنحة دجاج مشوية بصوص الباربكيو المدخن والليمون", img: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=400&q=80" },
+
+      // تصنيف: أطباق صحية ومقبلات
+      { name: "وجبات صحية (أرز + شوربة خضار)", cat: "أطباق صحية ومقبلات", desc: "وجبة متوازنة وقليلة السعرات للمهتمين بالصحة والرشاقة", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80" },
+      { name: "سلطة فتوش", cat: "أطباق صحية ومقبلات", desc: "خضار موسمية طازجة مع الخبز المحمص والرمان والسماق البلدي", img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80" },
+      { name: "كبة مقلية", cat: "أطباق صحية ومقبلات", desc: "أقراص كبة مقرمشة محشوة باللحم المفروم البلدي والجوز", img: "https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=400&q=80" },
+      { name: "مقرمشات فوديز", cat: "أطباق صحية ومقبلات", desc: "سناك ونقانق مقرمشة ولذيذة محضرة يومياً في المطعم", img: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?auto=format&fit=crop&w=400&q=80" },
+
+      // تصنيف: فطائر وصاج
+      { name: "منافيش عالصاج", cat: "فطائر وصاج", desc: "فطائر ومناقيش مخبوزة على الصاج الساخن (زعتر، جبنة، محمرة)", img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80" }
+    ];
+
+    let cart = {};
+    let orderType = "توصيل طلب";
+    let activeCategory = "all";
+
+    // عرض الأطباق
+    function renderMenu() {
+      const container = document.getElementById('menuContainer');
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      const filtered = menuData.filter(item => {
+        const matchCat = (activeCategory === "all") || (item.cat === activeCategory);
+        const matchSearch = item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8; font-size:0.85rem;">لا توجد وجبات مطابقة للبحث.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="food-card">
+          <img src="${item.img}" class="food-thumb" alt="${item.name}" loading="lazy">
+          <div class="food-details">
+            <div class="food-cat-badge">${item.cat}</div>
+            <div class="food-name">${item.name}</div>
+            <div class="food-desc">${item.desc}</div>
+          </div>
+          <button class="btn-add" title="إضافة للطلب" onclick="addToCart('${item.name}')">+</button>
+        </div>
+      `).join('');
+    }
+
+    // تصفية حسب التصنيف
+    function selectCat(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu();
+    }
+
+    // تصفية بالبحث
+    function filterMenu() {
+      renderMenu();
+    }
+
+    // إدارة السلة
+    function addToCart(itemName) {
+      cart[itemName] = (cart[itemName] || 0) + 1;
+      updateCartUI();
+    }
+
+    function changeQty(itemName, delta) {
+      if (!cart[itemName]) return;
+      cart[itemName] += delta;
+      if (cart[itemName] <= 0) {
+        delete cart[itemName];
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cartCountBadge');
+      const totalItems = Object.values(cart).reduce((a, b) => a + b, 0);
+
+      if (totalItems > 0) {
+        badge.innerText = totalItems;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      const listContainer = document.getElementById('cartItemsList');
+      const itemsKeys = Object.keys(cart);
+
+      if (itemsKeys.length === 0) {
+        listContainer.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:16px;">السلة فارغة حالياً.. تصفح المنيو وأضف وجباتك المفضلة!</p>`;
+        return;
+      }
+
+      listContainer.innerHTML = itemsKeys.map(k => `
+        <div class="cart-item">
+          <div class="cart-item-title">${k}</div>
+          <div class="cart-ctrls">
+            <button class="btn-qty" onclick="changeQty('${k}', -1)">-</button>
+            <span style="font-weight:800; font-size:0.95rem; min-width:18px; text-align:center;">${cart[k]}</span>
+            <button class="btn-qty" onclick="changeQty('${k}', 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setOrderType(type) {
+      orderType = type;
+      document.getElementById('optDelivery').classList.toggle('active', type === 'توصيل طلب');
+      document.getElementById('optTakeaway').classList.toggle('active', type === 'استلام من الفرع');
+    }
+
+    // التبديل بين التبويبات
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // إرسال الطلب عبر الواتساب إلى رقم المطعم
+    function sendWhatsAppOrder() {
+      const itemsKeys = Object.keys(cart);
+      if (itemsKeys.length === 0) {
+        alert("يرجى اختيار وجبة واحدة على الأقل قبل تأكيد الطلب!");
+        return;
+      }
+
+      const custName = document.getElementById('custName').value.trim();
+      const custNotes = document.getElementById('custNotes').value.trim();
+
+      if (!custName) {
+        alert("يرجى تدوين اسمك الكريم والعنوان أو رقم الطاولة.");
+        document.getElementById('custName').focus();
+        return;
+      }
+
+      let msg = `*طلب جديد من منيو foodies.a الإلكتروني* 🍔✨\n\n`;
+      msg += `📌 *نوع الطلب:* ${orderType}\n`;
+      msg += `👤 *العميل / العنوان:* ${custName}\n`;
+      if (custNotes) msg += `📝 *ملاحظات:* ${custNotes}\n`;
+      msg += `\n*قائمة الوجبات المطلوبة:*\n`;
+
+      itemsKeys.forEach((k, i) => {
+        msg += `${i + 1}. ${k} (العدد: ${cart[k]})\n`;
+      });
+
+      msg += `\nيرجى تأكيد استلام الطلب وبدء التحضير. شكراً لكم!`;
+
+      const phone = "963998187778";
+      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // بدء العرض عند تحميل الصفحة
+    window.onload = () => {
+      renderMenu();
+    };
+  </script>
+</body>
+</html>
